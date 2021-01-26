@@ -7,18 +7,18 @@ scoringMatrixFile = 'BLOSUM50.mat'
 gapOpening = 11
 gapExtension = 3
 
-swaTest = algs.SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
-nwaTest = algs.NeedlemanWunsch(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
 
 @pytest.fixture
 def some_relevant_data():
 	return np.ones(10)
 
-def test_fasta_io(swaTest):
+def test_fasta_io():
+	swaTest = algs.SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
 	assert swaTest.readFafsaSeq('sequences/prot-0004.fa') == 'SLEAAQKSNVTSSWAKASAAWGTAGPEFFMALFDAHDDVFAKFSGLFSGAAKGTVKNTPEMAAQAQSFKGLVSNWVDNLDNAGALEGQCKTFAANHKARGISAGQLEAAFKVLSGFMKSYGGDEGAWTAVAGALMGEIEPDM'
 	print('"I/O of Protein FAFSA Sequence" Test Passed')
 	
-def test_scoring_matrix_io(swaTest):
+def test_scoring_matrix_io():
+	swaTest = algs.SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
 	testScoringMatrix, testHeader = swaTest.readScoringMatrix('BLOSUM50.mat')
 	assert testScoringMatrix[0][0] == 5 #how do I avoid truth value of array ValueError?
 	assert testHeader[0] == 'A'
@@ -36,6 +36,7 @@ def test_identical():
 	print('"Identical Sequences" Test Passed')
 	
 def test_alignment_score():
+	swaTest = algs.SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
 	swaTest.seq1 = 'ARN'
 	swaTest.seq2 = 'ARN'
 	swaTest.align()
