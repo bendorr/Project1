@@ -7,8 +7,8 @@ scoringMatrixFile = 'BLOSUM50.mat'
 gapOpening = 11
 gapExtension = 3
 
-swaTest = SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
-nwaTest = NeedlemanWunsch(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
+swaTest = algs.SmithWaterman(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
+nwaTest = algs.NeedlemanWunsch(scoringMatrixFile, fa1, fa2, gapOpening, gapExtension)
 
 @pytest.fixture
 def some_relevant_data():
@@ -25,8 +25,8 @@ def test_scoring_matrix_io(swaTest):
 	print('"I/O of Scoring Matrix" Test Passed')
 	
 def test_identical():
-	swaTest2 = SmithWaterman(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
-	nwaTest2 = NeedlemanWunsch(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
+	swaTest2 = algs.SmithWaterman(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
+	nwaTest2 = algs.NeedlemanWunsch(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
 	swaTest2.align()
 	swaTest2.traceback()
 	nwaTest2.align()
