@@ -36,7 +36,7 @@ class PairwiseAligner:
         """
         matrix = []
         header = []
-        with open('../scoring_matrices/'+scoringMatrixFile,'r') as f:
+        with open('scoring_matrices/'+scoringMatrixFile,'r') as f:
             for line in f:
                 splitLine = line.split()
                 if splitLine[0].isalpha():
