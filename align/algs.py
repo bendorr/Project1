@@ -1,7 +1,6 @@
 import numpy as np
 
 class PairwiseAligner:
-    #still need to def init methods here, despite init.py file
     def __init__(self, scoringMatrixFile, fafsa1, fafsa2, gapOpening, gapExtension):
         self.setGapOpening(gapOpening)
         self.setGapExtension(gapExtension)
@@ -78,9 +77,8 @@ class PairwiseAligner:
     def setIBMatrixCell(self, value, row, col):
         self.IBMatrix[row][col] = value
 
-    #0 corresp to 0 in SW, 1 is diagonal, 2 is left, 3 is up
     def calcTracebackCell(self, maxVal, i, j, row, col, isNW):
-        if not isNW and maxVal == 0:
+        if not isNW and maxVal == 0: #a zero in a SmithWaterman scoring matrix
             self.setTMatrixCell(0, row+1, col+1)
         elif maxVal == self.mMatrix[row][col] + self.scoringMatrix[j][i]: #diagonal
             self.setTMatrixCell(1, row+1, col+1) #plus one here because of offset. Matches mMatrix
@@ -97,13 +95,11 @@ class PairwiseAligner:
                 i = self.getScoringMatrixCharIndex(char2) #row
                 j = self.getScoringMatrixCharIndex(char1) #col
 
-                #since we're setting r+1 and c+1 in mMatrix, we should take max of r and c (instead of (r,c) and (r-1,c-1) like in the notes)
-
                 #update the IA and IB matrices first
+                #since we're setting r+1 and c+1 in mMatrix, we should take max of r and c (instead of (r,c) and (r-1,c-1) like in the notes)
                 self.setIAMatrixCell(max(self.mMatrix[row][col+1] + self.gapOpening, self.IAMatrix[row][col+1] + self.gapExtension), row+1, col+1)
                 self.setIBMatrixCell(max(self.mMatrix[row+1][col] + self.gapOpening, self.IBMatrix[row+1][col] + self.gapExtension), row+1, col+1)
 
-                #AFFINE just depends on whether prev align IN GIVEN SEQ had gap or not
                 if isNW:
                     maxVal = max(self.mMatrix[row][col] + self.scoringMatrix[j][i], self.IAMatrix[row+1][col+1], self.IBMatrix[row+1][col+1])
                     self.calcTracebackCell(maxVal, i, j, row, col, isNW)
@@ -115,17 +111,23 @@ class PairwiseAligner:
                     self.calcTracebackCell(maxVal, i, j, row, col, isNW = False)
                 self.setMMatrixCell(maxVal, row+1, col+1) #plus ones are for the offset with the gaps are row and column zero
 
-                #note 1.18.21: I need to set row 0 and col 0 of the mMatrix before I can calc the other values in the matrix ([0][0] = 0), then
-                #   I can start using neighboring values to calculate Sij one row (or col) at a time
-                #I can have each subclass call the setMMatrixCell method with row=0 and col=0, and have them give their respective starting
-                #   values that way
-                #1.21.21: don't I already set all cells to 0 when I make the matrix, though?
-                #Hopefully the np.int32 object is not iterable error goes away once I give the max f(x) multiple arguments - it does
 
-
-    #traceback method must be called after align method
-    #Important to note that the matrix indeces are all +1 in relation to corresponding seq indeces
     def pairwiseTraceback(self, row, col):
+        """
+        Performs traceback algorithm over the tMatrix. Returns a tuple of the two aligned sequences.
+        This method must be called after the align method, since align fills the tMatrix.
+
+            Params:
+                row = row from which to begin the traceback
+                col = column from which to begin the traceback
+
+            Returns:
+                A tuple containing each of the two aligned sequences as strings
+
+        """
+
+        # Note that the matrix indeces are all +1 in relation to corresponding seq indeces, due to the offset caused 
+        #   by inserting the first row and column in the matrix
         s1, s2 = '', ''
         while(row > -1 or col > -1):
             if(self.tMatrix[row][col] == 0):
