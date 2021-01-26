@@ -36,4 +36,8 @@ def test_identical():
     	print('"Identical Sequences" Test Passed')
 
 def test_alignment_score():
-	assert True
+    	swaTest.seq1 = 'ARN'
+    	swaTest.seq2 = 'ARN'
+    	swaTest.align()
+    	assert swaTest.alignmentScore == 19
+    	print('"Alignment Score" Test Passed')
