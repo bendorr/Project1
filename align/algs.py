@@ -346,8 +346,8 @@ class NeedlemanWunsch(PairwiseAligner):
 
 
 """
-fa1 = '../sequences/prot-0004.fa'
-fa2 = '../sequences/prot-0008.fa'
+fa1 = 'sequences/prot-0004.fa'
+fa2 = 'sequences/prot-0008.fa'
 scoringMatrixFile = 'BLOSUM50.mat'
 gapOpening = 11
 gapExtension = 3
@@ -384,8 +384,8 @@ print(swa.alignedSequences)
 ######
 # Unit Tests
 ######
-fa1 = '../sequences/prot-0004.fa'
-fa2 = '../sequences/prot-0008.fa'
+fa1 = 'sequences/prot-0004.fa'
+fa2 = 'sequences/prot-0008.fa'
 scoringMatrixFile = 'BLOSUM50.mat'
 gapOpening = 11
 gapExtension = 3
