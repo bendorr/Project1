@@ -16,28 +16,28 @@ def some_relevant_data():
 
 def test_fasta_io(swaTest):
 	assert swaTest.readFafsaSeq('../sequences/prot-0004.fa') == 'SLEAAQKSNVTSSWAKASAAWGTAGPEFFMALFDAHDDVFAKFSGLFSGAAKGTVKNTPEMAAQAQSFKGLVSNWVDNLDNAGALEGQCKTFAANHKARGISAGQLEAAFKVLSGFMKSYGGDEGAWTAVAGALMGEIEPDM'
-    	print('"I/O of Protein FAFSA Sequence" Test Passed')
-
+	print('"I/O of Protein FAFSA Sequence" Test Passed')
+	
 def test_scoring_matrix_io(swaTest):
 	testScoringMatrix, testHeader = swaTest.readScoringMatrix('BLOSUM50.mat')
-    	assert testScoringMatrix[0][0] == 5 #how do I avoid truth value of array ValueError?
-    	assert testHeader[0] == 'A'
-    	print('"I/O of Scoring Matrix" Test Passed')
-
+	assert testScoringMatrix[0][0] == 5 #how do I avoid truth value of array ValueError?
+	assert testHeader[0] == 'A'
+	print('"I/O of Scoring Matrix" Test Passed')
+	
 def test_identical():
 	swaTest2 = SmithWaterman(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
-    	nwaTest2 = NeedlemanWunsch(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
-    	swaTest2.align()
-    	swaTest2.traceback()
-    	nwaTest2.align()
-    	nwaTest2.traceback()
-    	assert swaTest2.alignedSequences[0] == swaTest2.alignedSequences[1]
-    	assert nwaTest2.alignedSequences[0] == nwaTest2.alignedSequences[1]
-    	print('"Identical Sequences" Test Passed')
-
+	nwaTest2 = NeedlemanWunsch(scoringMatrixFile, fa1, fa1, gapOpening, gapExtension)
+	swaTest2.align()
+	swaTest2.traceback()
+	nwaTest2.align()
+	nwaTest2.traceback()
+	assert swaTest2.alignedSequences[0] == swaTest2.alignedSequences[1]
+	assert nwaTest2.alignedSequences[0] == nwaTest2.alignedSequences[1]
+	print('"Identical Sequences" Test Passed')
+	
 def test_alignment_score():
-    	swaTest.seq1 = 'ARN'
-    	swaTest.seq2 = 'ARN'
-    	swaTest.align()
-    	assert swaTest.alignmentScore == 19
-    	print('"Alignment Score" Test Passed')
+	swaTest.seq1 = 'ARN'
+	swaTest.seq2 = 'ARN'
+	swaTest.align()
+	assert swaTest.alignmentScore == 19
+	print('"Alignment Score" Test Passed')
