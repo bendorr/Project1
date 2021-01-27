@@ -31,7 +31,12 @@ from the root directory of this project.
   -contains FAFSA (.fa) sequence files
   
 -test/
-  -test_align.py 
+  -test_align.py: contains function definitions for unit tests
+  
+-align/
+  -algs.py: contains the PairwiseAligner, SmithWaterman, and NeedlemanWunsch class definitions
+  -Ben_Orr_BMI203_HW1.ipynb: a Jupyter notebook containing written answers to assignment questions in prose, as well as function definitions and function calls
+    that were used in answering assignment questions.
   
 ```
 
