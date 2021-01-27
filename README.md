@@ -24,9 +24,11 @@ from the root directory of this project.
 ### API
 
 ```
-Class PairwiseAligner:
+Class PairwiseAligner():
 
   - Contains methods and attributes that are shared between both Smith-Waterman and Needleman-Wunsch alignment algorithms.
+  - The pairwiseAlign method must be called before the pairwiseTraceback method, because pairwiseAlign fills the traceback matrix that is used in pairwiseTraceback
+  
     - Attributes:
       - gap opening and gap extension penalties
       - scoring matrix and the matrix header (order of amino acids in the rows and columns of the matrix)
@@ -105,6 +107,89 @@ Class PairwiseAligner:
                     will be set by this function
                 isNW = a boolean that is True if the current alignment algorithm is Needleman-Wunsch, False if the current
                     algorithm is Smith-Waterman
+
+            Returns:
+                None
+                
+       - pairwiseTraceback:
+       Performs traceback algorithm over the tMatrix. Returns a tuple of the two aligned sequences.
+        This method must be called after the align method, since align fills the tMatrix.
+
+            Params:
+                row = row from which to begin the traceback
+                col = column from which to begin the traceback
+
+            Returns:
+                A tuple containing each of the two aligned sequences as strings
+```
+
+```
+Class SmithWaterman(PairwiseAligner):
+
+  - A child class of Class PairwiseAligner.  Contains only two methods, each of which simply calls a function from the parent class with specific parameters, and sets attributes after running the parent class' method.
+  - The align method must be called before the traceback method, for the same reason that pairwiseAlign must be called before pairwiseTraceback in the parent class.
+  
+  - Methods:
+    - align:
+    Runs the pairwiseAlign method from the PairwiseAligner class with the parameter isNW = False.
+        Sets its alignmentScore attribute to equal the "Smith-Waterman Highest Value in the M Matrix" value
+        that is set during the pairwiseAlign method.
+
+            Params:
+                None
+
+            Returns:
+                None
+    
+    - traceback:
+    Runs the pairwiseTraceback method from the PairwiseAligner class with parameters that indicate
+        the location of the cell containing the highest alignment score in the Smith-Waterman alignment score
+        matrix (which is where the traceback for the Smith-Waterman alignment algorithm begins), and saves
+        the tuple of aligned sequences that is returned in its alignedSequences attribute.
+
+            Params:
+                None
+
+            Returns:
+                None
+```
+
+```
+Class NeedlemanWunsch(PairwiseAligner):
+
+  - A child class of Class PairwiseAligner.  Contains three methods; two methods simply call a function from the parent class with specific parameters, and set attributes after running the parent class' method.  The third method (fillFirstRowAndColumn) is specific to the NeedlemanWunsch alignment algorithm, and must be run before the align method.
+  - The fillFirstRowAndColumn method must be run before the align method, as the align method uses the values that are filled in by the first method. Additionally, the align method must be called before the traceback method, for the same reason that pairwiseAlign must be called before pairwiseTraceback in the parent class.
+  
+  -Methods:
+    - fillFirstRowAndColumn:
+    The M Matrix is initialized to be full of zeros, but the Needleman-Wunsch algorithm requires
+        the first row and first column of its scoring matrix (M Matrix) to be filled with compounding
+        gap opening penalties (for example, if the gap opening penalty = 5, the values in the first row
+        should be: -5, -10, -15, -20, etc.). This function fills the first row and first column of the
+        M Matrix with compounding gap opening penalties.
+
+            Params:
+                None
+
+            Returns:
+                None
+    - align:
+    Runs the pairwiseAlign method from the PairwiseAligner class with the parameter isNW = True.
+        Sets its alignmentScore attribute to equal the value in the bottom right corner of the
+        alignment score matrix.
+
+            Params:
+                None
+
+            Returns:
+                None
+    - traceback:
+    Runs the pairwiseTraceback method from the PairwiseAligner class with parameters that indicate
+        the location of the cell in the bottow right corner of the Needleman-Wunsch alignment score matrix,
+        and saves the tuple of aligned sequences that is returned in its alignedSequences attribute.
+
+            Params:
+                None
 
             Returns:
                 None
