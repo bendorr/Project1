@@ -24,7 +24,7 @@ from the root directory of this project.
 ### API
 
 ```
-# Class PairwiseAligner:
+Class PairwiseAligner:
 
   - Contains methods and attributes that are shared between both Smith-Waterman and Needleman-Wunsch alignment algorithms.
     - Attributes:
