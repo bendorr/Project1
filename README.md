@@ -21,6 +21,21 @@ python -m pytest test/*
 ```
 from the root directory of this project.
 
+### Layout of Repo
+
+```
+-scoring_matrices/
+  -contains scoring matrix (.ma) files
+  
+-sequences/
+  -contains FAFSA (.fa) sequence files
+  
+-test/
+  -test_align.py 
+  
+```
+
+
 ### API
 
 ```
